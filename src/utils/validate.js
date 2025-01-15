@@ -13,8 +13,8 @@ export const CheckValidData = (email , password , fullName,phone , isSignIn) =>{
     const isValidFullName = /^[A-Z][a-z]+(?: [A-Z][a-z]+)*$/.test(FullName)
     const isValidPhoneNumber = /^\+?[0-9]{1,3}?[-. ]?(\(?\d{1,4}\)?)[-. ]?\d{1,4}[-. ]?\d{1,9}$/.test(phoneNumber)
 
-    if(!isValidFullName) return "Invalid Name"
-    if(!isValidPhoneNumber) return "Invalid Phone Number"
+    if(!isSignIn &&!isValidFullName ) return "Invalid Name"
+    if(!isSignIn && !isValidPhoneNumber) return "Invalid Phone Number"
     if(!isValidEmail) return "Invalid Email"
     if(!isValidPassword) return "Invalid Password"
     
