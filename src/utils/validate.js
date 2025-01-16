@@ -1,8 +1,5 @@
 export const CheckValidData = (email , password , fullName,phone , isSignIn) =>{
     console.log(isSignIn);
-    
-    
-    
     const Email = email.current.value;
     const Password = password.current.value;
     const FullName = !isSignIn && fullName.current.value;
