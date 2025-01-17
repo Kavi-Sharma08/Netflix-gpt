@@ -4,10 +4,11 @@ import Header from "./Header"
 import { CheckValidData } from "../utils/validate"
 import Footer from "./Footer"
 import { auth } from "../utils/firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword , updateProfile  } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,10 +43,6 @@ const Login = () => {
             // An error occurred
             // ...
           });
-          
-          
-          
-          
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -70,6 +67,7 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          setError(errorMessage)
           
           
         });
@@ -102,7 +100,7 @@ const Login = () => {
             placeholder="Full name"
             ref={fullName}
           />}
-          {error == "Invalid Name" ? <p className="text-red-600 m-2 px-1 font-semibold">{error}</p> : ""}
+          
           {!IsSignIn && <  input
             className="border border-white m-2 bg-black bg-opacity-55 p-2 rounded text-white"
             type="text"
@@ -111,7 +109,7 @@ const Login = () => {
             placeholder="Phone Number"
             ref={phone}
           />}
-          {error == "Invalid Phone Number" ? <p className="text-red-600 m-2 px-1 font-semibold">{error}</p> : ""}
+          {!IsSignIn && error == "Invalid Phone Number" ? <p className="text-red-600 m-2 px-1 font-semibold">{error}</p> : ""}
           <input
             className="border border-white m-2 bg-black bg-opacity-55 p-2 rounded text-white"
             type="email"
@@ -121,7 +119,7 @@ const Login = () => {
             ref={email}
 
           />
-          {error == "Invalid Email" ? <p className="text-red-600 m-2 px-1 font-semibold">{error}</p> : ""}
+          
 
           <input
             className="border border-white m-2 p-2 rounded bg-black bg-opacity-55 text-white"
@@ -132,7 +130,7 @@ const Login = () => {
             ref={password}
 
           />
-          {error == "Invalid Password" ? <p className="text-red-600 font-semibold m-2 px-1">{error}</p> : ""}
+          {error  ? <p className="text-red-600 font-semibold m-2 px-1">{error}</p> : ""}
           <button
             className="border border-black m-2 p-2 bg-red-600 text-white rounded hover:bg-red-700 my-5"
             type="submit" onClick={HandleSignInButton}

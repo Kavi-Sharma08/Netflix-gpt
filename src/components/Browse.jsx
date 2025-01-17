@@ -8,13 +8,14 @@ import { useDispatch } from "react-redux";
 
 const Browse = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
   const HandleSignOut = ()=>{
     signOut(auth).then(() => {
+
       dispatch(removeUser());
-      navigate('/')
       // Sign-out successful.
     }).catch((error) => {
+      navigate("/error")
       
       // An error happened.
     });
