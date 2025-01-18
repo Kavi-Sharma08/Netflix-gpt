@@ -4,10 +4,11 @@ import Header from "./Header"
 import { CheckValidData } from "../utils/validate"
 import Footer from "./Footer"
 import { auth } from "../utils/firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword , updateProfile  } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { addUser } from "../utils/userSlice"
+
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -24,43 +25,45 @@ const Login = () => {
     if (message) return;
 
     if (!IsSignIn) {
-      //Sign-up
+      // Sign-Up
       createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
         .then((userCredential) => {
-          // Signed up 
           const user = userCredential.user;
-          console.log(user)
-          updateProfile(user, {
-            displayName: fullName.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
-          }).then(() => {
-            const {uid , displayName , email} = auth.currentUser;
-            dispatch(addUser({uid : uid , email : email , displayName : displayName}))
-            // Profile updated!
-            navigate('/browse')
-            // ...
-          }).catch((error) => {
-            setError(error.message)
-            // An error occurred
-            // ...
+
+          // Send verification email
+          sendEmailVerification(user)
+            .then(() => {
+              alert("Verification email sent! Please check your inbox to verify your account.");
+              setError("Please verify your email before logging in.");
+              
+            })
+            .catch((error) => {
+              setError(`Error sending email verification: ${error.message}`);
+            });
+
+          // Update user profile
+          return updateProfile(user, {
+            displayName: fullName.current.value,
+            photoURL: PROFILE_PIC,
           });
         })
+        .then(() => {
+          // Notify user to verify their email
+          alert("Account created successfully. Please verify your email to complete the process.");
+          setError("Account created. Verification email sent!");
+        })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setError(errorMessage)
-          
-          
-          // ..
+          setError(`Sign-up error: ${error.message}`);
         });
-
     }
+
     else {
       //Sign in
       signInWithEmailAndPassword(auth, email.current.value, password.current.value)
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
-        }).then(()=>{
+        }).then(() => {
           navigate('/browse')
 
         })
@@ -68,8 +71,8 @@ const Login = () => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setError(errorMessage)
-          
-          
+
+
         });
 
     }
@@ -100,7 +103,7 @@ const Login = () => {
             placeholder="Full name"
             ref={fullName}
           />}
-          
+
           {!IsSignIn && <  input
             className="border border-white m-2 bg-black bg-opacity-55 p-2 rounded text-white"
             type="text"
@@ -119,7 +122,7 @@ const Login = () => {
             ref={email}
 
           />
-          
+
 
           <input
             className="border border-white m-2 p-2 rounded bg-black bg-opacity-55 text-white"
@@ -130,7 +133,7 @@ const Login = () => {
             ref={password}
 
           />
-          {error  ? <p className="text-red-600 font-semibold m-2 px-1">{error}</p> : ""}
+          {error ? <p className="text-red-600 font-semibold m-2 px-1">{error}</p> : ""}
           <button
             className="border border-black m-2 p-2 bg-red-600 text-white rounded hover:bg-red-700 my-5"
             type="submit" onClick={HandleSignInButton}
