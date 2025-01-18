@@ -13,8 +13,7 @@ const useNowPlayingMovies = async () => {
         const data = await fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=true&language=en-US&page=1&sort_by=popularity.desc', API_OPTIONS)
         const json = await data.json();
         dispatch(addNowPlayingMovies(json.results))
-        console.log(json.results)
-        
+       
 
     }
 
