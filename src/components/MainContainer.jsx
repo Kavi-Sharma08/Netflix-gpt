@@ -8,7 +8,7 @@ const MainContainer = () => {
   const movies = useSelector((state) => state?.TopRatedMovie?.TopMovie)
   if (movies === null) return
   
-  const mainMovie = movies[6];
+  const mainMovie = movies[1];
   const {original_title , overview , id} = mainMovie
   
 
