@@ -6,10 +6,9 @@ import Footer from "./Footer"
 import { auth } from "../utils/firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-
-
-
+import { useDispatch } from "react-redux";
+import { GoogleAuthProvider, signInWithPopup, } from "firebase/auth";
+import { addUser } from "../utils/userSlice"
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +18,33 @@ const Login = () => {
   const phone = useRef();
   const [IsSignIn, setIsSignIn] = useState(true);
   const [error, setError] = useState(null);
+
+
+  const HandleGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log(user)
+        // dispatch(addUser({displayName : user.displayName , photoURL : user.photoURL}))
+
+
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
   const HandleSignInButton = () => {
     const message = CheckValidData(email, password, fullName, phone, IsSignIn);
     setError(message);
@@ -35,13 +61,13 @@ const Login = () => {
             .then(() => {
               alert("Verification email sent! Please check your inbox to verify your account.");
               setError("Please verify your email before logging in.");
-              
+
             })
             .catch((error) => {
               setError(`Error sending email verification: ${error.message}`);
             });
 
-          // Update user profile
+
           return updateProfile(user, {
             displayName: fullName.current.value,
             photoURL: PROFILE_PIC,
@@ -143,7 +169,7 @@ const Login = () => {
           <div>
             <h3 className="font-bold text-1xl text-white flex justify-center my-2">OR</h3>
             <button className="border border-black  bg-white text-black brightness-75 rounded w-full p-2 hover:bg-transparent hover:text-white hover:transition duration-300 hover:border-white my-3"
-              type="submit">Use a sign in button</button>
+              type="submit" onClick={HandleGoogle}>Use Google Account to Sign up</button>
             <h3 className="text-white hover:underline text-center cursor-pointer">Forgot Password ?</h3>
           </div>
           <div className="flex items-center my-6 mx-2">

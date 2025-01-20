@@ -15,10 +15,11 @@ const Header = () => {
     
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const { uid, displayName, email } = user;
+        const { uid, displayName, email , photoURL } = user;
 
         // Dispatch user update to Redux
-        dispatch(addUser({ uid, email, displayName }));
+        dispatch(addUser({ uid, email, displayName , photoURL }));
+        
 
         // Ensure the user state is updated before navigating
         navigate("/browse"); // Navigate only after the state is updated
