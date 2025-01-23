@@ -37,8 +37,8 @@ const Header = () => {
   }, [dispatch, navigate]);
 
   return (
-    <div className="absolute px-9 py-2 bg-gradient-to-br from-black bg-cover z-10 w-screen">
-      <img className="w-60 brightness-125" src={LOGO} alt="Logo" />
+    <div className="absolute  bg-gradient-to-br from-black bg-cover z-10 sm:w-full">
+      <img className="sm:w-36 w-28 brightness-125 sm:block hidden" src={LOGO} alt="Logo" />
     </div>
   );
 };

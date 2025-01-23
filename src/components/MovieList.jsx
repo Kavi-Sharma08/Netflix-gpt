@@ -2,7 +2,7 @@ import MovieCard from "./MovieCard";
 
 
 const MovieList = ({ title, Movies }) => {
-    console.log(Movies)
+    
     if (!Movies) return;
     return (
         <div className="bg-slate-900">

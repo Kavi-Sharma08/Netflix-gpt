@@ -110,82 +110,121 @@ const Login = () => {
 
   }
   return (
-    <div>
+    <div className="flex flex-col min-w-screen min-h-screen">
       <Header />
-      <div>
-        {/* Background Image */}
-        <img src={BACKGROUND_IMG} className="w-full h-screen object-cover" alt="Background" />
+      <div className="bg-black flex justify-center items-center min-h-screen relative">
+        {/* Background Image (hidden on small screens) */}
+        <img
+          src={BACKGROUND_IMG}
+          className="absolute top-0 left-0 w-full h-full object-cover hidden sm:block"
+          alt="Background"
+        />
 
         {/* Form */}
-        <form onSubmit={(e) => { e.preventDefault() }}
-          className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-3/12 min-h-[540px] bg-black bg-opacity-85 p-4 rounded shadow-lg z-10"
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className={`relative z-10 flex flex-col justify-center items-center bg-black bg-opacity-85 w-full sm:w-[500px] sm:rounded-lg shadow-lg p-6 sm:p-8`}
         >
-          <div className="font-bold text-3xl text-white flex justify-center my-6">
-            <h3>{IsSignIn ? "Sign in" : "Sign up"}</h3>
+          <div className="w-full">
+            <div className="text-center text-white font-bold sm:text-3xl text-2xl mb-6">
+              <h3>{IsSignIn ? "Sign in" : "Sign up"}</h3>
+            </div>
+
+            {!IsSignIn && (
+              <input
+                className="border border-gray-500 bg-black bg-opacity-55 p-3 rounded text-white mb-4 w-full"
+                type="text"
+                placeholder="Full Name"
+                aria-label="Full Name"
+                ref={fullName}
+              />
+            )}
+
+            {!IsSignIn && (
+              <input
+                className="border border-gray-500 bg-black bg-opacity-55 p-3 rounded text-white mb-4 w-full"
+                type="text"
+                placeholder="Phone Number"
+                aria-label="Phone Number"
+                ref={phone}
+              />
+            )}
+
+            {error === "Invalid Phone Number" && (
+              <p className="text-red-600 font-semibold mb-4">{error}</p>
+            )}
+
+            <input
+              className="border border-gray-500 bg-black bg-opacity-55 p-3 rounded text-white mb-4 w-full"
+              type="email"
+              placeholder="Email"
+              aria-label="Email"
+              ref={email}
+            />
+
+            <input
+              className="border border-gray-500 bg-black bg-opacity-55 p-3 rounded text-white mb-4 w-full"
+              type="password"
+              placeholder="Password"
+              aria-label="Password"
+              ref={password}
+            />
+
+            {error && <p className="text-red-600 font-semibold mb-4">{error}</p>}
+
+            <button
+              className="w-full bg-red-600 text-white p-3 rounded hover:bg-red-700 transition duration-200"
+              type="submit"
+              onClick={HandleSignInButton}
+            >
+              {IsSignIn ? "Sign in" : "Sign up"}
+            </button>
+
+            <div className="text-center text-white font-semibold mt-6 mb-4">OR</div>
+
+            <button
+              className="w-full border border-gray-400 bg-white text-black p-3 rounded hover:bg-transparent hover:text-white hover:border-white transition duration-200"
+              type="button"
+              onClick={HandleGoogle}
+            >
+              Use Google Account to {IsSignIn ? "Sign in" : "Sign up"}
+            </button>
+
+            <div className="text-center mt-4">
+              <span className="text-white cursor-pointer hover:underline">
+                Forgot Password?
+              </span>
+            </div>
+
+            <div className="flex items-center mt-6">
+              <input
+                className="h-5 w-5"
+                type="checkbox"
+                id="rememberMe"
+                aria-label="Remember Me"
+              />
+              <label htmlFor="rememberMe" className="text-white ml-2">
+                Remember Me
+              </label>
+            </div>
+
+            <div className="flex justify-center mt-6">
+              <span className="text-white">
+                {IsSignIn ? "New to Netflix?" : "Already Registered?"}
+              </span>
+              <span
+                onClick={HandleSignUpForm}
+                className="text-red-600 font-bold ml-2 cursor-pointer hover:underline"
+              >
+                {IsSignIn ? "Sign Up" : "Sign In"}
+              </span>
+            </div>
           </div>
-          {!IsSignIn && <  input
-            className="border border-white m-2 bg-black bg-opacity-55 p-2 rounded text-white"
-            type="text"
-            placeholder="Full name"
-            ref={fullName}
-          />}
-
-          {!IsSignIn && <  input
-            className="border border-white m-2 bg-black bg-opacity-55 p-2 rounded text-white"
-            type="text"
-            name="Name"
-            id="Name"
-            placeholder="Phone Number"
-            ref={phone}
-          />}
-          {!IsSignIn && error == "Invalid Phone Number" ? <p className="text-red-600 m-2 px-1 font-semibold">{error}</p> : ""}
-          <input
-            className="border border-white m-2 bg-black bg-opacity-55 p-2 rounded text-white"
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-            ref={email}
-
-          />
-
-
-          <input
-            className="border border-white m-2 p-2 rounded bg-black bg-opacity-55 text-white"
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            ref={password}
-
-          />
-          {error ? <p className="text-red-600 font-semibold m-2 px-1">{error}</p> : ""}
-          <button
-            className="border border-black m-2 p-2 bg-red-600 text-white rounded hover:bg-red-700 my-5"
-            type="submit" onClick={HandleSignInButton}
-          >
-            {IsSignIn ? "Sign in" : "Sign up"}
-          </button>
-          <div>
-            <h3 className="font-bold text-1xl text-white flex justify-center my-2">OR</h3>
-            <button className="border border-black  bg-white text-black brightness-75 rounded w-full p-2 hover:bg-transparent hover:text-white hover:transition duration-300 hover:border-white my-3"
-              type="submit" onClick={HandleGoogle}>Use Google Account to Sign up</button>
-            <h3 className="text-white hover:underline text-center cursor-pointer">Forgot Password ?</h3>
-          </div>
-          <div className="flex items-center my-6 mx-2">
-            <input className=" h-5 w-5" type="checkbox" name="" id="" /><label className="text-white mx-1" htmlFor="">Remember me</label>
-          </div>
-          <div className="flex items-center">
-            <span className="text-white">{IsSignIn ? "New to Netflix?" : "Already Registered?"}</span>
-            <span onClick={HandleSignUpForm} className="font-bold text-white hover:underline mx-2 cursor-pointer">{IsSignIn ? "Sign Up" : "Sign In"}</span>
-          </div>
-
         </form>
       </div>
-      <div>
-        <Footer />
-      </div>
     </div>
+
+
 
 
 

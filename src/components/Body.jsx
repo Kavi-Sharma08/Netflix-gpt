@@ -21,7 +21,7 @@ const Body = () => {
     ])
   
   return (
-    <div className='w-screen h-96'>
+    <div className=' sm:min-h-screen sm:min-w-screen  m-0 p-0 min-h-screen min-w-screen '>
         <RouterProvider router = {appRouter}/>
     </div>
   )
