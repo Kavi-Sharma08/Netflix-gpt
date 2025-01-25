@@ -9,7 +9,10 @@ import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import GptSearch from "./GptSearch";
 import { useEffect, useState } from "react";
+
+
 const Browse = () => {
+  const [Gpt, setGpt] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const userProfile = useSelector((store) => store.user);
@@ -27,6 +30,9 @@ const Browse = () => {
   
   const dispatch = useDispatch();
   useNowPlayingMovies();
+  const HandleGpt = ()=>{
+    setGpt(!Gpt);
+  }
   const HandleSignOut = () => {
     signOut(auth).then(() => {
 
@@ -43,11 +49,12 @@ const Browse = () => {
 
     <div>
       <Header />
-      {/* <GptSearch /> */}
+      { Gpt && <GptSearch />}
 
 
       <div className="absolute flex items-center flex-col right-1 mx-4 my-1 w-44">
-        <button type="button" className="bg-red-700 border  font-semibold p-2 m-2">GPT Search</button>
+        
+        <button type="button" className="bg-red-700 border  font-semibold p-2 m-2" onClick={HandleGpt}>GPT Search</button>
 
 
         {!isLoading ? (

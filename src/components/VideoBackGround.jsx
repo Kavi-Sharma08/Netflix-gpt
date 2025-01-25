@@ -3,7 +3,7 @@ import useTrailer from '../customHooks/useTrailer';
 import { useSelector } from 'react-redux';
 
 const VideoBackGround = ({ movieId }) => {
-  const[mute , setMute] = useState(0);
+  
   if(!movieId) return
   useTrailer(movieId);
   const trailerVideo = useSelector((state) => state.TopRatedMovie?.MovieTrailer)

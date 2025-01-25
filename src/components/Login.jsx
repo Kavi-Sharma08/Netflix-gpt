@@ -110,9 +110,9 @@ const Login = () => {
 
   }
   return (
-    <div className="flex flex-col min-w-screen min-h-screen">
+    <div className="flex flex-col min-w-screen min-h-screen bg-black">
       <Header />
-      <div className="bg-black flex justify-center items-center min-h-screen relative">
+      <div className="flex justify-center items-center min-h-screen relative p-4 sm:p-8">
         {/* Background Image (hidden on small screens) */}
         <img
           src={BACKGROUND_IMG}
@@ -123,7 +123,7 @@ const Login = () => {
         {/* Form */}
         <form
           onSubmit={(e) => e.preventDefault()}
-          className={`relative z-10 flex flex-col justify-center items-center bg-black bg-opacity-85 w-full sm:w-[500px] sm:rounded-lg shadow-lg p-6 sm:p-8`}
+          className={`relative z-10 flex flex-col justify-center items-center bg-black bg-opacity-85 w-full max-w-[500px] sm:rounded-lg shadow-lg px-6 sm:px-8 py-8`}
         >
           <div className="w-full">
             <div className="text-center text-white font-bold sm:text-3xl text-2xl mb-6">
@@ -223,6 +223,7 @@ const Login = () => {
         </form>
       </div>
     </div>
+
 
 
 
