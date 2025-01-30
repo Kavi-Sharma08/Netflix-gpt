@@ -9,6 +9,8 @@ import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import GptSearch from "./GptSearch";
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+
 
 
 const Browse = () => {
@@ -23,8 +25,6 @@ const Browse = () => {
     }
     
   }, [userProfile]);
-  console.log("Loading " , isLoading)
-  console.log("Object",userProfile)
   const { photoUrl, displayName } = userProfile || {};
   console.log("photoUrl ",photoUrl)
   
@@ -50,13 +50,8 @@ const Browse = () => {
     <div>
       <Header />
       { Gpt && <GptSearch />}
-
-
       <div className="absolute flex items-center flex-col right-1 mx-4 my-1 w-44">
-        
-        <button type="button" className="bg-red-700 border  font-semibold p-2 m-2" onClick={HandleGpt}>GPT Search</button>
-
-
+        <Button variant="secondary" className="my-2 z-20" onClick = {HandleGpt}>Gpt Search</Button>
         {!isLoading ? (
           photoUrl ? (
             <img className="w-14 h-14" src={photoUrl} alt="User Profile" />
