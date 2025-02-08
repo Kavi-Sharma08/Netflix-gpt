@@ -10,14 +10,16 @@ import SecondaryContainer from "./SecondaryContainer";
 import GptSearch from "./GptSearch";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { toggleGptSearch } from "@/utils/gptSlice";
 
 
 
 const Browse = () => {
-  const [Gpt, setGpt] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const userProfile = useSelector((store) => store.user);
+  const Showgpt = useSelector((store)=>store.gpt.showGptSearch)
+  
   
   useEffect(() => {
     if (userProfile) {
@@ -26,12 +28,12 @@ const Browse = () => {
     
   }, [userProfile]);
   const { photoUrl, displayName } = userProfile || {};
-  console.log("photoUrl ",photoUrl)
+  
   
   const dispatch = useDispatch();
   useNowPlayingMovies();
   const HandleGpt = ()=>{
-    setGpt(!Gpt);
+    dispatch(toggleGptSearch())
   }
   const HandleSignOut = () => {
     signOut(auth).then(() => {
@@ -49,7 +51,7 @@ const Browse = () => {
 
     <div>
       <Header />
-      { Gpt && <GptSearch />}
+      
       <div className="absolute flex items-center flex-col right-1 mx-4 my-1 w-44">
         <Button variant="secondary" className="my-2 z-20" onClick = {HandleGpt}>Gpt Search</Button>
         {!isLoading ? (
@@ -64,10 +66,17 @@ const Browse = () => {
         <h1 className="font-bold text-zinc-50">
           {displayName || "Guest"}
         </h1>
-        <button className="z-20 border-2 border-black m-2 p-2 rounded-xl font-semibold hover:bg-red-600 transition-all transition-duration-300 text-white" onClick={HandleSignOut}>Sign Out</button>
+        <button className="z-20 border-2 border-black m-2 p-2 rounded-xl font-semibold hover:bg-red-600 transition-all transition-duration-300 text-purple-500 hover:text-white" onClick={HandleSignOut}>Sign Out</button>
       </div>
-      <MainContainer />
-      <SecondaryContainer />
+      {
+        Showgpt ? <GptSearch/> : 
+        <>
+          <MainContainer />
+          <SecondaryContainer />
+        </>
+
+      }
+      
     </div>
   )
 }

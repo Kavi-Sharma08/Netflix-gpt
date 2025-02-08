@@ -2,7 +2,7 @@ import { BACKGROUND_IMG, PROFILE_PIC } from "../utils/Constants"
 import { useRef, useState } from "react"
 import Header from "./Header"
 import { CheckValidData } from "../utils/validate"
-import Footer from "./Footer"
+
 import { auth } from "../utils/firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
